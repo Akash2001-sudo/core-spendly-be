@@ -1,25 +1,25 @@
-import { Request, Response } from 'express';
-import Expense, { IExpense } from '../models/Expense';
+
+import Expense from '../models/Expense.js';
 
 // @desc    Get all expenses
 // @route   GET /api/expenses
 // @access  Public
-export const getExpenses = async (req: Request, res: Response) => {
+export const getExpenses = async (req, res) => {
   try {
     const expenses = await Expense.find();
     res.status(200).json(expenses);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 // @desc    Create an expense
 // @route   POST /api/expenses
 // @access  Public
-export const createExpense = async (req: Request, res: Response) => {
+export const createExpense = async (req, res) => {
   const { description, amount, category, date } = req.body;
 
-  const newExpense: IExpense = new Expense({
+  const newExpense = new Expense({
     description,
     amount,
     category,
@@ -30,14 +30,14 @@ export const createExpense = async (req: Request, res: Response) => {
     const savedExpense = await newExpense.save();
     res.status(201).json(savedExpense);
   } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
+    res.status(400).json({ message: error.message });
   }
 };
 
 // @desc    Get a single expense
 // @route   GET /api/expenses/:id
 // @access  Public
-export const getExpenseById = async (req: Request, res: Response) => {
+export const getExpenseById = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
     if (expense) {
@@ -46,14 +46,14 @@ export const getExpenseById = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Expense not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 // @desc    Update an expense
 // @route   PUT /api/expenses/:id
 // @access  Public
-export const updateExpense = async (req: Request, res: Response) => {
+export const updateExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
     if (expense) {
@@ -68,14 +68,14 @@ export const updateExpense = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Expense not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
+    res.status(400).json({ message: error.message });
   }
 };
 
 // @desc    Delete an expense
 // @route   DELETE /api/expenses/:id
 // @access  Public
-export const deleteExpense = async (req: Request, res: Response) => {
+export const deleteExpense = async (req, res) => {
   try {
     const expense = await Expense.findByIdAndDelete(req.params.id);
     if (expense) {
@@ -84,6 +84,6 @@ export const deleteExpense = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Expense not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: error.message });
   }
 };

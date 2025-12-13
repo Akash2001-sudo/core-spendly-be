@@ -1,16 +1,16 @@
-import express, { Express } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import connectDB from './config/db';
-import expenseRoutes from './routes/expenseRoutes';
-import { notFound, errorHandler } from './middleware/errorMiddleware';
+import connectDB from './config/db.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
 
 connectDB();
 
-const app: Express = express();
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());

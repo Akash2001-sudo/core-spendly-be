@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { notFound, errorHandler } from '../middleware/errorMiddleware';
+import { notFound, errorHandler } from '../middleware/errorMiddleware.js';
 
 const app = express();
 
