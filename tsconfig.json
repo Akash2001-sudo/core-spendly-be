@@ -7,6 +7,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    // Add these lines to explicitly include type definitions for Node.js and Jest
+    "types": ["node", "jest"]
+  },
+  // Ensure we process all files within the source directory, including tests
+  "include": ["src/**/*"]
 }
