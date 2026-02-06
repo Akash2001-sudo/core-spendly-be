@@ -1,12 +1,11 @@
-
 import Expense from '../models/Expense.js';
 
 // @desc    Get all expenses
 // @route   GET /api/expenses
-// @access  Public
+// @access  Private
 export const getExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.find();
+    const expenses = await Expense.find({ user: req.user.id });
     res.status(200).json(expenses);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,11 +14,12 @@ export const getExpenses = async (req, res) => {
 
 // @desc    Create an expense
 // @route   POST /api/expenses
-// @access  Public
+// @access  Private
 export const createExpense = async (req, res) => {
   const { description, amount, category, date } = req.body;
 
   const newExpense = new Expense({
+    user: req.user.id,
     description,
     amount,
     category,
@@ -36,10 +36,10 @@ export const createExpense = async (req, res) => {
 
 // @desc    Get a single expense
 // @route   GET /api/expenses/:id
-// @access  Public
+// @access  Private
 export const getExpenseById = async (req, res) => {
   try {
-    const expense = await Expense.findById(req.params.id);
+    const expense = await Expense.findOne({ _id: req.params.id, user: req.user.id });
     if (expense) {
       res.status(200).json(expense);
     } else {
@@ -52,10 +52,11 @@ export const getExpenseById = async (req, res) => {
 
 // @desc    Update an expense
 // @route   PUT /api/expenses/:id
-// @access  Public
+// @access  Private
 export const updateExpense = async (req, res) => {
   try {
-    const expense = await Expense.findById(req.params.id);
+    const expense = await Expense.findOne({ _id: req.params.id, user: req.user.id });
+
     if (expense) {
       expense.description = req.body.description || expense.description;
       expense.amount = req.body.amount || expense.amount;
@@ -74,10 +75,10 @@ export const updateExpense = async (req, res) => {
 
 // @desc    Delete an expense
 // @route   DELETE /api/expenses/:id
-// @access  Public
+// @access  Private
 export const deleteExpense = async (req, res) => {
   try {
-    const expense = await Expense.findByIdAndDelete(req.params.id);
+    const expense = await Expense.findOneAndDelete({ _id: req.params.id, user: req.user.id });
     if (expense) {
       res.status(200).json({ message: 'Expense removed' });
     } else {
